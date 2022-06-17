@@ -3,7 +3,7 @@ import numpy as np
 
 from map import *
 
-gravity = np.array([0, 4])
+gravity = np.array([0, 6])
 
 class Node:
     def __init__(self, start_pos : np.array, friction_coefficient : float, mass : float):
@@ -84,7 +84,7 @@ class Muscle:
         self.time = 0
         
     def tick(self):
-        if self.time in self.switch_times :
+        if self.time % self.switch_times == 0 :
             if self.pull:
                 self.pull = False
                 self.push = True
@@ -126,6 +126,10 @@ class Creature:
         for n in self.nodes:
             f = f + n.pos[0]
         self.fitness = f / len(self.nodes) - 300
+    
+    def reset(self):
+        for n in self.nodes:
+            n.pos = n.start_pos
     
     def tick(self):
         for m in self.muscles:

@@ -1,7 +1,7 @@
 import pygame
 import random
 
-tile_width = 300
+tile_width = 500
 ground_y = 700
 
 random.seed()

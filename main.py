@@ -22,11 +22,14 @@ game_map = Map()
 x_shift = 0
 fitness = 0
 
-creatures = readCreatures("gentest.json")
-creatures.sort(key=sortFunc)
+creatures = readCreatures("gen135.json")
+creatures.sort(key=sortFunc, reverse = True)
+
 
 creature = creatures[0]
-
+print(creature.fitness)
+print(creature.nodes[0].pos)
+creature.fitness = 0
 clock = pygame.time.Clock()
 for t in range(0, 30*15):
     clock.tick_busy_loop(30)
@@ -39,7 +42,7 @@ for t in range(0, 30*15):
         break
     
     x_shift = creature.fitness
-    fitness = (creature.fitness) / 10
+    fitness = (creature.fitness)
     
     if np.isnan(fitness):
         fitness = 0
@@ -57,5 +60,5 @@ for t in range(0, 30*15):
 
     screen.blit(textFitness, textFitnessRect)
     pygame.display.update()
-
+print(creature.fitness)
 pygame.quit()

@@ -15,36 +15,42 @@ fitness = 0
 
 creatures = []
 
-for i in range(0,1000):
-    creatures.append(generateCreature())
+#for i in range(0,1000):
+#    creatures.append(generateCreature())
 
-c_num = 0
+c_num = 62000
 writeCreatures(creatures, f"gentest.json")
 
-for g in range(0, 10):
+creatures = readCreatures("gen61.json")
+
+for g in range(62, 1000):
     fits = []
     for c in creatures:
         fitness = 0
+        c.reset()
         for t in range(0, 30*15):
             x_shift = c.fitness
             fitness = c.fitness / 10
             
             if np.isnan(fitness):
                 fitness = -500
+                c.fitness = -500
+                break
             
             game_map.tick(x_shift)
             
             c.tick()
     
-        print(c_num)
+        if c_num % 100 == 0:
+            print(c_num)
         c_num = c_num + 1
         fits.append(fitness)
+        
     
-    fits.sort()
+    creatures.sort(key=sortFunc, reverse=True)
+    for c in creatures:
+        print(c.fitness)
     writeCreatures(creatures, f"gen{g}.json")
-    print(fits)
-    
-    creatures.sort(key=sortFunc)
     creatures = creatures[:500]
     for c in creatures[:500]:
         creatures.append(reproduce(c))

@@ -6,13 +6,13 @@ from creature import *
 min_node_friction = 0
 max_node_friction = 1
 
-min_node_mass = 5
+min_node_mass = 10
 max_node_mass = 50
 
 first_node_pos = np.array([350, 500])
 
 min_muscle_strength = 0.1
-max_muscle_strength = 5
+max_muscle_strength = 8
 
 min_muscle_length = 50
 max_muscle_length = 150
@@ -20,8 +20,6 @@ max_muscle_length = 150
 min_muscle_flexibility = 5
 max_muscle_flexibility = 50
 
-min_switch_time = 0
-max_switch_time = 120
 
 min_nodes = 2
 max_nodes = 10
@@ -55,10 +53,8 @@ def generateMuscle(nodes, muscles):
     muscle_strength = randomFloat(min_muscle_strength, max_muscle_strength)
     muscle_flexibility = randomFloat(min_muscle_flexibility, max_muscle_flexibility)
     
-    muscle_switch_times = []
+    muscle_switch_times = np.random.choice([30, 60, 120])
     
-    for i in range(np.random.randint(1,3)):
-        muscle_switch_times.append(np.random.randint(max_switch_time))
     
     if len(nodes) < 1:
         node1 = generateNode(first_node_pos)
@@ -99,17 +95,18 @@ def generateCreature():
 def mutateNode(node):
     new_friction = max(min_node_friction, min(node.friction_coefficient + randomFloat(-0.2, 0.2), max_node_friction))
     new_mass = max(min_node_mass, min(node.mass + randomFloat(-5, 5), max_node_mass))
-    new_node = Node(node.pos, new_friction, new_mass)
+    new_node = Node(node.start_pos, new_friction, new_mass)
     return new_node
 
 def mutateMuscle(muscle, nodes):
     new_strength = max(min_muscle_strength, min(muscle.strength + randomFloat(-0.5, 0.5), max_muscle_strength))
     new_length = max(min_muscle_length, min(muscle.relax_length + randomFloat(-10, 10), max_muscle_length))
     new_flexibility = max(min_muscle_flexibility, min(muscle.flexibility + randomFloat(-5, 5), max_muscle_flexibility))
-    new_times = []
-    for t in muscle.switch_times:
-        new_times.append(max(0, min(t + (np.random.randint(10) - 5), max_switch_time)))
-    return Muscle(nodes, muscle.node_index1, muscle.node_index2, new_strength, new_length, new_flexibility, new_times)
+    if np.random.randint(20) == 0:
+        new_switch_times = np.random.choice([30, 60, 120])
+    else:
+        new_switch_times = muscle.switch_times
+    return Muscle(nodes, muscle.node_index1, muscle.node_index2, new_strength, new_length, new_flexibility, new_switch_times)
     
 def reproduce(parent):
     nodes = []
