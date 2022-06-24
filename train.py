@@ -18,12 +18,12 @@ creatures = []
 #for i in range(0,1000):
 #    creatures.append(generateCreature())
 
-c_num = 62000
+c_num = 535000
 writeCreatures(creatures, f"gentest.json")
 
-creatures = readCreatures("gen61.json")
+creatures = readCreatures("gen534.json")
 
-for g in range(62, 1000):
+for g in range(535, 1000):
     fits = []
     for c in creatures:
         fitness = 0

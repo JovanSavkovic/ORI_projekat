@@ -24,7 +24,7 @@ class Map:
         self.generate()
 
     def generate(self):
-        for i in range(1000):
+        for i in range(128):
             self.tiles.append(Tile(i*tile_width))
    
     def tick(self, x_shift):

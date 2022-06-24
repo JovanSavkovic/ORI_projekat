@@ -1,5 +1,6 @@
 import pygame
 import numpy
+import sys
 
 from map import *
 from creature import *
@@ -22,16 +23,18 @@ game_map = Map()
 x_shift = 0
 fitness = 0
 
-creatures = readCreatures("gen135.json")
+gen_num = str(sys.argv[1])
+
+print(gen_num)
+
+creatures = readCreatures(f"gen{gen_num}.json")
 creatures.sort(key=sortFunc, reverse = True)
 
 
 creature = creatures[0]
-print(creature.fitness)
-print(creature.nodes[0].pos)
 creature.fitness = 0
 clock = pygame.time.Clock()
-for t in range(0, 30*15):
+for t in range(0, 30*60):
     clock.tick_busy_loop(30)
     screen.fill((0,204,255))
     
@@ -41,7 +44,7 @@ for t in range(0, 30*15):
     if not running:
         break
     
-    x_shift = creature.fitness
+    x_shift = creature.fitness + 200
     fitness = (creature.fitness)
     
     if np.isnan(fitness):
